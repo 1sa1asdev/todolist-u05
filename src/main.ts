@@ -1,4 +1,3 @@
-// src/main.ts
 import "./style.css";
 import { supabase } from "./lib/supabase";
 import type { Database } from "./types/supabase";
@@ -18,7 +17,10 @@ let sortMode: "newest" | "oldest" | "az" = "newest";
 
 /* ---------- helpers ---------- */
 function esc(s: string) {
-  return s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  return s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 function escAttr(s: string) {
   return esc(s).replaceAll('"', "&quot;");
@@ -78,15 +80,27 @@ function todosView() {
       ${errorMsg ? `<p style="color:red">${esc(errorMsg)}</p>` : ""}
 
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0;">
-        <input id="search" placeholder="Sök..." value="${escAttr(searchTerm)}" style="flex:1;min-width:200px;" />
+        <input id="search" placeholder="Sök..." value="${escAttr(
+          searchTerm
+        )}" style="flex:1;min-width:200px;" />
         <select id="filter">
-          <option value="all" ${filterMode === "all" ? "selected" : ""}>Alla</option>
-          <option value="active" ${filterMode === "active" ? "selected" : ""}>Aktiva</option>
-          <option value="done" ${filterMode === "done" ? "selected" : ""}>Klara</option>
+          <option value="all" ${
+            filterMode === "all" ? "selected" : ""
+          }>Alla</option>
+          <option value="active" ${
+            filterMode === "active" ? "selected" : ""
+          }>Aktiva</option>
+          <option value="done" ${
+            filterMode === "done" ? "selected" : ""
+          }>Klara</option>
         </select>
         <select id="sort">
-          <option value="newest" ${sortMode === "newest" ? "selected" : ""}>Nyast</option>
-          <option value="oldest" ${sortMode === "oldest" ? "selected" : ""}>Äldst</option>
+          <option value="newest" ${
+            sortMode === "newest" ? "selected" : ""
+          }>Nyast</option>
+          <option value="oldest" ${
+            sortMode === "oldest" ? "selected" : ""
+          }>Äldst</option>
           <option value="az" ${sortMode === "az" ? "selected" : ""}>A–Z</option>
         </select>
         <button id="clear-all-btn" type="button">Rensa listan</button>
@@ -101,8 +115,12 @@ function todosView() {
         ${getVisibleTodos()
           .map(
             (t) => `
-          <li data-id="${t.id}" style="display:flex;gap:8px;align-items:center;margin:6px 0;">
-            <input class="toggle" type="checkbox" ${t.completed ? "checked" : ""} />
+          <li data-id="${
+            t.id
+          }" style="display:flex;gap:8px;align-items:center;margin:6px 0;">
+            <input class="toggle" type="checkbox" ${
+              t.completed ? "checked" : ""
+            } />
             <input class="title" value="${escAttr(t.title)}" style="flex:1;" />
             <button class="delete" type="button">Ta bort</button>
           </li>
@@ -188,7 +206,10 @@ document.addEventListener("submit", async (e) => {
 
     try {
       errorMsg = null;
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (error) throw error;
     } catch (err) {
       errorMsg = getErrorMessage(err);
@@ -261,7 +282,8 @@ document.addEventListener("click", async (e) => {
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) throw error;
 
-      errorMsg = "Skapat konto. Om e-postbekräftelse krävs: bekräfta och logga sedan in.";
+      errorMsg =
+        "Skapat konto. Om e-postbekräftelse krävs: bekräfta och logga sedan in.";
       render();
     } catch (err) {
       errorMsg = getErrorMessage(err);
@@ -306,7 +328,10 @@ document.addEventListener("click", async (e) => {
 
     try {
       errorMsg = null;
-      const { error } = await supabase.from("todos").delete().eq("user_id", user.id);
+      const { error } = await supabase
+        .from("todos")
+        .delete()
+        .eq("user_id", user.id);
       if (error) throw error;
 
       todos = [];
@@ -330,10 +355,15 @@ document.addEventListener("change", async (e) => {
 
     try {
       errorMsg = null;
-      const { error } = await supabase.from("todos").update({ completed: input.checked }).eq("id", id);
+      const { error } = await supabase
+        .from("todos")
+        .update({ completed: input.checked })
+        .eq("id", id);
       if (error) throw error;
 
-      todos = todos.map((t) => (t.id === id ? { ...t, completed: input.checked } : t));
+      todos = todos.map((t) =>
+        t.id === id ? { ...t, completed: input.checked } : t
+      );
       render();
     } catch (err) {
       errorMsg = getErrorMessage(err);
@@ -363,7 +393,10 @@ document.addEventListener(
 
     try {
       errorMsg = null;
-      const { error } = await supabase.from("todos").update({ title }).eq("id", id);
+      const { error } = await supabase
+        .from("todos")
+        .update({ title })
+        .eq("id", id);
       if (error) throw error;
 
       todos = todos.map((t) => (t.id === id ? { ...t, title } : t));
