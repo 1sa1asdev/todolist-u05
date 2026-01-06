@@ -6,7 +6,7 @@
 
 Svaghet
 
-- Html byggs som strängar, detta leder till att det kan vara jobbigt att
+- Html byggs som strängar, detta leder till att det kan vara jobbigt att se struktur och bygga vidare
 
 # Vad är TypeScript och varför använder man det istället för vanlig JavaScript?
 
